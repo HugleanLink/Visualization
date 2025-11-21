@@ -27,44 +27,6 @@ def parse_temperature(metar):
     return int(t)
 
 
-def prase_dewpoint(metar):
-    match = TEMP_PATTERN.search(metar)
-    if not match:
-        return None
-    t = match.group(2)
-    if t.startswith("M"):
-        return -int(t[1:])
-    return int(t)
-
-
-wind_pattern = re.compile(r'(VRB|\d{3})(\d{2,3})(?:G\d{2,3})?(KT|MPS)')
-winddir=[]
-windspeed=[]
-def prase_winddirandspeed(metar):
-    match = wind_pattern.search(metar)
-    if not match:
-        return None
-    winddir.append(match.group(1))
-    windspeed.append(match.group(2))
-    a=match.group(1)
-    if a=="VRB":
-        a=str(random.randint(0, 359))
-    return winddir, windspeed
-
-
-def load_windrose(airport,year):
-    prase_winddirandspeed()
-    filepath = os.path.join(DATA_DIR, airport, f"{year}.txt")
-    df1 = pd.read_csv(filepath)
-    df1.columns = ["ICAO", "Time", "Metar"]
-    df1["winddir"]=df1["Metar"].apply(winddir)
-    df1["windspeed"]=df1["Metar"].apply(windspeed)
-    df1["Time"] = pd.to_datetime(df1["Time"])
-    df1["month"] = df1["Time"].dt.month
-    df1["hour"] = df1["Time"].dt.hour
-    return df1
-
-
 def load_metar(airport, year):
     filepath = os.path.join(DATA_DIR, airport, f"{year}.txt")
     df = pd.read_csv(filepath)
@@ -76,6 +38,16 @@ def load_metar(airport, year):
     return df
 
 
+def prase_dewpoint(metar):
+    match = TEMP_PATTERN.search(metar)
+    if not match:
+        return None
+    t = match.group(2)
+    if t.startswith("M"):
+        return -int(t[1:])
+    return int(t)
+
+
 def load_dew(airport, year):
     filepath = os.path.join(DATA_DIR, airport, f"{year}.txt")
     df2 = pd.read_csv(filepath)
@@ -85,3 +57,38 @@ def load_dew(airport, year):
     df2["month"] = df2["Time"].dt.month
     df2["hour"] = df2["Time"].dt.hour
     return df2
+
+
+def prase_wind(metar):
+    pattern = r'(VRB|\d{3})(\d{2,3})(?:G\d{2,3})?(KT|MPS)'
+    m = re.search(pattern, metar)
+    if not m:
+        return None,None
+    direction = m.group(1)
+    speed = m.group(2)
+    unit = m.group(3)
+    if direction != "VRB":
+        direction=int(direction)
+    else:
+        direction=random.randint(0,359)
+    if unit == "KT":
+        speed=int(speed)*0.514
+    return direction, speed
+
+
+def load_wind(airport, year):
+    filepath = os.path.join(DATA_DIR, airport, f"{year}.txt")
+    df1 = pd.read_csv(filepath)
+    df1.columns = ["ICAO", "Time", "Metar"]
+    wind_dirs=[]
+    wind_speeds=[]
+    for metar in df1["Metar"]:
+        d,s = prase_wind(metar)
+        wind_dirs.append(d)
+        wind_speeds.append(s)
+        df1["winddir"] = wind_dirs
+        df1["windspeed"] = wind_speeds
+        df1["Time"] = pd.to_datetime(df1["Time"])
+        df1["month"] = df1["Time"].dt.month
+        df1["hour"] = df1["Time"].dt.hour
+        return df1
