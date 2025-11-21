@@ -3,7 +3,7 @@ import seaborn as sns
 
 
 def plot_windspeed(df1,airport,year):
-    pivot = df1.pivot_table(values="windspeed",index="month",columns="hour",aggfunc="mean")
+    pivot = df1.groupby(["month", "hour"])["windspeed"].mean().unstack()
     fig = plt.figure(figsize=(15, 6))
     sns.heatmap(pivot,cmap="Blues",linewidths=0.3,cbar_kws={"label": "Wind Speed(m/s)"})
     plt.title(f"{year} WindSpeed HeatMap")
@@ -13,6 +13,7 @@ def plot_windspeed(df1,airport,year):
     plt.yticks(rotation=0)
 
     return fig
+
 
 
 
