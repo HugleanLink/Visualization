@@ -65,11 +65,10 @@ def prase_winddir(metar):
     if not m:
         return None
     direction = m.group(1)
-    if direction != "VRB":
-        direction=int(direction)
+    if direction == "VRB":
+        return random.randint(0, 359)
     else:
-        direction=random.randint(0,359)
-    return direction
+        return int(direction)
 
 
 def prase_windspeed(metar):
@@ -77,12 +76,11 @@ def prase_windspeed(metar):
     m = wind_regex.search(metar)
     if not m:
         return None
-    speed=m.group(2)
-    unit=m.group(3)
-    speed=int(speed)
-    for speed,unit in m:
-        if unit=="KT":
-            speed = speed * 0.514
+    direction = m.group(1)
+    speed = int(m.group(2))
+    unit = m.group(3)
+    if unit == "KT":
+        speed = speed * 0.514
     return speed
 
 
@@ -96,6 +94,7 @@ def load_wind(airport, year):
     df1["month"] = df1["Time"].dt.month
     df1["hour"] = df1["Time"].dt.hour
     return df1
+
 
 
 
