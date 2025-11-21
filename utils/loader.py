@@ -91,4 +91,5 @@ def load_wind(airport, year):
         df1["Time"] = pd.to_datetime(df1["Time"])
         df1["month"] = df1["Time"].dt.month
         df1["hour"] = df1["Time"].dt.hour
-        return df1
+    return df1
+
