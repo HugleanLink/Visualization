@@ -86,7 +86,7 @@ def prase_windspeed(metar):
     return windspeed
 
 
-def load_winddir(airport, year):
+def load_wind(airport, year):
     filepath = os.path.join(DATA_DIR, airport, f"{year}.txt")
     df1 = pd.read_csv(filepath)
     df1.columns = ["ICAO", "Time", "Metar"]
@@ -96,5 +96,6 @@ def load_winddir(airport, year):
     df1["month"] = df1["Time"].dt.month
     df1["hour"] = df1["Time"].dt.hour
     return df1
+
 
 
