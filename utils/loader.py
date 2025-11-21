@@ -83,7 +83,7 @@ def prase_windspeed(metar):
     for speed,unit in m:
         if unit=="KT":
             speed = speed * 0.514
-    return windspeed
+    return speed
 
 
 def load_wind(airport, year):
@@ -92,10 +92,11 @@ def load_wind(airport, year):
     df1.columns = ["ICAO", "Time", "Metar"]
     df1["winddir"]=df1["Metar"].apply(prase_winddir)
     df1["windspeed"]=df1["Metar"].apply(prase_windspeed)
-    df1["Time"] = pd1.to_datetime(df["Time"])
+    df1["Time"] = pd.to_datetime(df["Time"])
     df1["month"] = df1["Time"].dt.month
     df1["hour"] = df1["Time"].dt.hour
     return df1
+
 
 
 
