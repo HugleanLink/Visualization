@@ -2,6 +2,7 @@ import streamlit as st
 import io
 from utils.loader import list_airports, list_years, load_metar
 from plot.temp import plot_temp
+from plot.Windrose import plot_wind
 
 
 st.set_page_config(page_title="气象数据可视化", layout="wide")
@@ -36,4 +37,5 @@ if st.button("查询图像"):
         file_name=f"{airport}_{year}_{choice}.png",
         mime="image/png"
     )
+
 
