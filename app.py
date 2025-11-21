@@ -15,7 +15,7 @@ airport = st.selectbox("选择机场", list_airports())
 year = st.selectbox("选择年份", list_years(airport))
 if st.button("查询图像"):
     df = load_metar(airport, year)
-    df1 = load_wind(airport, year)
+    #df1 = load_wind(airport, year)
     df2 = load_dew(airport, year)
     if choice == "气温热图":
         fig = plot_temp(df, airport, year)
@@ -40,3 +40,4 @@ if st.button("查询图像"):
         file_name=f"{airport}_{year}_{choice}.png",
         mime="image/png"
     )
+
