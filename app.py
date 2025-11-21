@@ -1,10 +1,12 @@
 import streamlit as st
+import io
 from utils.loader import list_airports, list_years, load_metar
 from plot.temp import plot_temp
 
-st.set_page_config(page_title="气象数据可视化",layout="wide")
+
+st.set_page_config(page_title="气象数据可视化", layout="wide")
 st.title("气象数据可视化系统")
-choice = st.selectbox("选择数据类型",["气温热图","露点热图","风向热图","风速热图","风玫瑰"])
+choice = st.selectbox("选择数据类型", ["气温热图", "露点热图", "风向热图", "风速热图", "风玫瑰"])
 airport = st.selectbox("选择机场", list_airports())
 year = st.selectbox("选择年份", list_years(airport))
 if st.button("查询图像"):
@@ -24,3 +26,12 @@ if st.button("查询图像"):
         st.warning("风玫瑰模块尚未完成")
         st.stop()
     st.pyplot(fig)
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=1280)
+    buf.seek(0)
+    st.download_button(
+        label="下载PNG",
+        data=buf,
+        file_name=f"{airport}_{year}_{choice}.png",
+        mime="image/png"
+    )
