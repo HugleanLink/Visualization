@@ -8,7 +8,7 @@ from plot.windspeed import plot_windspeed
 from plot.Windrose import plot_wind
 
 
-st.set_page_config(page_title="气象数据可视化", layout="wide")
+st.set_page_config(page_title="气象数据可视化平台", layout="wide")
 st.title("气象数据可视化系统")
 choice = st.selectbox("选择数据类型", ["气温热图", "露点热图", "风向热图", "风速热图", "风玫瑰"])
 airport = st.selectbox("选择机场", list_airports())
@@ -40,5 +40,6 @@ if st.button("查询图像"):
         file_name=f"{airport}_{year}_{choice}.png",
         mime="image/png"
     )
+
 
 
