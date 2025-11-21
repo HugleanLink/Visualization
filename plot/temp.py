@@ -19,4 +19,18 @@ def plot_temp(df, airport, year):
     return fig
 
 
-
+def plot_dew(df2, airport, year):
+    pivot = df2.groupby(["month", "hour"])["Temp_C"].mean().unstack()
+    fig = plt.figure(figsize=(15, 6))
+    sns.heatmap(
+        pivot,
+        cmap="coolwarm",
+        linewidths=0.3,
+        cbar_kws={"label": "Temperature (°C)"}
+    )
+    plt.title(f"{year} HeatMap")
+    plt.xlabel("Time")
+    plt.ylabel("Month")
+    plt.xticks(range(24), [f"{h:02d}:00" for h in range(24)], rotation=45)
+    plt.yticks(rotation=0)
+    return fig
