@@ -1,7 +1,8 @@
 import streamlit as st
 import io
 from utils.loader import list_airports, list_years, load_metar,load_dew
-from plot.temp import plot_temp,plot_dew
+from plot.temp import plot_temp
+from plot.dewpoint import plot_dew
 from plot.Windrose import plot_wind
 
 
@@ -37,3 +38,4 @@ if st.button("查询图像"):
         file_name=f"{airport}_{year}_{choice}.png",
         mime="image/png"
     )
+
