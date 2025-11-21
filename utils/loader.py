@@ -60,8 +60,8 @@ def load_dew(airport, year):
 
 
 def prase_wind(metar):
-    pattern = r'(VRB|\d{3})(\d{2,3})(?:G\d{2,3})?(KT|MPS)'
-    m = re.search(pattern, metar)
+    wind_regex = re.compile(r'(VRB|\d{3})(\d{2,3})(?:G\d{2,3})?(KT|MPS)')
+    m = wind_regex.search(metar)
     if not m:
         return None,None
     direction = m.group(1)
@@ -94,6 +94,7 @@ def load_wind(airport, year):
         df1["month"] = df1["Time"].dt.month
         df1["hour"] = df1["Time"].dt.hour
     return df1
+
 
 
 
