@@ -59,42 +59,42 @@ def load_dew(airport, year):
     return df2
 
 
-def prase_wind(metar):
+def prase_winddir(metar):
     wind_regex = re.compile(r'(VRB|\d{3})(\d{2,3})(?:G\d{2,3})?(KT|MPS)')
     m = wind_regex.search(metar)
     if not m:
-        return None,None
+        return None
     direction = m.group(1)
-    speed = m.group(2)
-    unit = m.group(3)
     if direction != "VRB":
         direction=int(direction)
     else:
         direction=random.randint(0,359)
-    speed = int(speed)
-    if unit == "KT":
-        speed = speed * 0.514
-    return direction, speed
+    return direction
 
 
-def load_wind(airport, year):
+def prase_windspeed(metar):
+    wind_regex = re.compile(r'(VRB|\d{3})(\d{2,3})(?:G\d{2,3})?(KT|MPS)')
+    m = wind_regex.search(metar)
+    if not m:
+        return None
+    speed=m.group(2)
+    unit=m.group(3)
+    speed=int(speed)
+    for speed,unit in m:
+        if unit=="KT":
+            speed = speed * 0.514
+    return windspeed
+
+
+def load_winddir(airport, year):
     filepath = os.path.join(DATA_DIR, airport, f"{year}.txt")
     df1 = pd.read_csv(filepath)
     df1.columns = ["ICAO", "Time", "Metar"]
-    wind_dirs=[]
-    wind_speeds=[]
-    for metar in df1["Metar"]:
-        d,s = prase_wind(metar)
-        wind_dirs.append(d)
-        wind_speeds.append(s)
-        df1["winddir"] = wind_dirs
-        df1["windspeed"] = wind_speeds
-        df1["Time"] = pd.to_datetime(df1["Time"])
-        df1["month"] = df1["Time"].dt.month
-        df1["hour"] = df1["Time"].dt.hour
+    df1["winddir"]=df1["Metar"].apply(prase_winddir)
+    df1["windspeed"]=df1["Metar"].apply(prase_windspeed)
+    df1["Time"] = pd1.to_datetime(df["Time"])
+    df1["month"] = df1["Time"].dt.month
+    df1["hour"] = df1["Time"].dt.hour
     return df1
-
-
-
 
 
