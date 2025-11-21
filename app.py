@@ -1,7 +1,7 @@
 import streamlit as st
 import io
-from utils.loader import list_airports, list_years, load_metar
-from plot.temp import plot_temp
+from utils.loader import list_airports, list_years, load_metar,load_dew
+from plot.temp import plot_temp,plot_dew
 from plot.Windrose import plot_wind
 
 
@@ -12,11 +12,11 @@ airport = st.selectbox("选择机场", list_airports())
 year = st.selectbox("选择年份", list_years(airport))
 if st.button("查询图像"):
     df = load_metar(airport, year)
+    df2 = load_dew(airport, year)
     if choice == "气温热图":
         fig = plot_temp(df, airport, year)
     elif choice == "露点热图":
-        st.warning("露点模块尚未完成")
-        st.stop()
+        fig = plot_dew(df2, airport, year)
     elif choice == "风向热图":
         st.warning("风向模块尚未完成")
         st.stop()
@@ -37,5 +37,3 @@ if st.button("查询图像"):
         file_name=f"{airport}_{year}_{choice}.png",
         mime="image/png"
     )
-
-
