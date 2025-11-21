@@ -23,8 +23,9 @@ if st.button("查询图像"):
         st.warning("风速模块尚未完成")
         st.stop()
     elif choice == "风玫瑰":
-        st.warning("风玫瑰模块尚未完成")
-        st.stop()
+        fig = plot_wind(df, airport, year)
+        # st.warning("风玫瑰模块尚未完成")
+        # st.stop()
     st.pyplot(fig)
     buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=1280)
@@ -35,3 +36,4 @@ if st.button("查询图像"):
         file_name=f"{airport}_{year}_{choice}.png",
         mime="image/png"
     )
+
