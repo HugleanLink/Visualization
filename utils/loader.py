@@ -73,6 +73,8 @@ def prase_wind(metar):
         direction=random.randint(0,359)
     if unit == "KT":
         speed=speed*0.514
+    else:
+        speed=int(speed)
     return direction, speed
 
 
@@ -92,5 +94,6 @@ def load_wind(airport, year):
         df1["month"] = df1["Time"].dt.month
         df1["hour"] = df1["Time"].dt.hour
     return df1
+
 
 
