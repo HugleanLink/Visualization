@@ -92,10 +92,11 @@ def load_wind(airport, year):
     df1.columns = ["ICAO", "Time", "Metar"]
     df1["winddir"]=df1["Metar"].apply(prase_winddir)
     df1["windspeed"]=df1["Metar"].apply(prase_windspeed)
-    df1["Time"] = pd.to_datetime(df["Time"])
+    df1["Time"] = pd.to_datetime(df1["Time"])
     df1["month"] = df1["Time"].dt.month
     df1["hour"] = df1["Time"].dt.hour
     return df1
+
 
 
 
