@@ -55,7 +55,8 @@ if st.button("查询图像"):
         data=buf,
         file_name=f"{airport}_{display_year_str}_{choice}.png",
         mime="image/png"
-    ))
+    )
+
 
 
 
