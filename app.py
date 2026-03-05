@@ -48,7 +48,7 @@ if available_years:
                 step=1
             )
         if start_year > end_year:
-            st.warning("注意：起始年份大于结束年份，已自动为你调换顺序。")
+            st.warning("起始年份需大于结束年份，已自动调换顺序")
             start_year, end_year = end_year, start_year   
         display_year_str = f"{start_year}-{end_year}"
 else:
@@ -61,13 +61,12 @@ timezone_choice = st.radio(
     ["UTC+0 (国际标准时间)", "UTC+8 (北京时间)"], 
     horizontal=True
 )
-
-
 show_annot = st.checkbox("在热图中显示具体数值", value=False)
 if st.button("查询图像"):
-    with st.spinner('正在处理...'):
-        if df is not None:
-            if choice == "气温热图":
+    with st.spinner('正在处理数据并生成图像'):
+        df = None
+        fig = None
+        if choice == "气温热图":
                 fig = plot_temp(df, airport, plot_title_suffix, show_annot=show_annot)
             elif choice == "露点热图":
                 fig = plot_dew(df, airport, plot_title_suffix, show_annot=show_annot)
@@ -108,8 +107,4 @@ if st.button("查询图像"):
                     mime="image/png"
                 )
         else:
-            st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
-
-
-
-
+            st.warning("所选范围内没有找到有效数据，请检查文件是否存在")
