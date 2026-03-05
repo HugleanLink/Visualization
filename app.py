@@ -13,7 +13,6 @@ choice = st.selectbox("选择数据类型", ["气温热图", "露点热图", "�
 airport = st.selectbox("选择机场", list_airports())
 
 available_years = list_years(airport)
-
 if available_years:
     if len(available_years) > 1:
         year_range = st.select_slider(
@@ -24,11 +23,10 @@ if available_years:
         start_year, end_year = year_range
     else:
         start_year = end_year = available_years[0]
-        st.info(f"该机场目前只有 {start_year} 年的数据。")
-    
+        st.info(f"该机场目前仅有 {start_year} 年的数据可用。")
     display_year_str = f"{start_year}-{end_year}" if start_year != end_year else f"{start_year}"
 else:
-    st.error("未找到数据文件")
+    st.error(f"在目录 {airport} 下未发现符合格式的 .txt 数据文件")
     st.stop()
 
 if st.button("查询图像"):
@@ -58,3 +56,4 @@ if st.button("查询图像"):
         )
     else:
         st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
+
