@@ -3,7 +3,7 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 
-def plot_temp(df, airport, year):
+def plot_temp(df, airport, year, show_annot=False):
     df = df[(df["Temp_C"] > -60) & (df["Temp_C"] < 60)].copy()
     pivot = df.groupby(["month", "hour"])["Temp_C"].mean().unstack()
     pivot = pivot.reindex(index=range(1, 13), columns=range(24))
@@ -35,5 +35,6 @@ def plot_temp(df, airport, year):
     )
     plt.tight_layout() 
     return fig
+
 
 
