@@ -14,7 +14,7 @@ def plot_temp(df, airport, year):
         cmap="coolwarm", 
         linewidths=0.1, 
         cbar_kws={"label": "Temperature (°C)"},
-        # annot=True, fmt=".1f"
+        annot=True, fmt=".1f"
     )
     plt.title(f"{airport} {year} Temperature HeatMap", fontsize=15, pad=20)
     plt.xlabel("Local Hour" if "UTC+8" in str(year) else "UTC Hour", fontsize=12)
@@ -33,3 +33,4 @@ def plot_temp(df, airport, year):
     )
     plt.tight_layout() # 防止导出图片时边缘文字被切掉
     return fig
+
