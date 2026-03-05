@@ -81,7 +81,16 @@ def list_airports():
     return sorted([d for d in os.listdir(DATA_DIR) if os.path.isdir(os.path.join(DATA_DIR, d))])
 
 def list_years(airport):
-    airport_path = os.path.join(DATA_DIR, airport)
-    if not os.path.exists(airport_path): return []
-    years = [f.replace(".txt", "") for f in os.listdir(airport_path) if f.endswith(".txt")]
-    return sorted([int(y) for y in years if y.isdigit()])
+    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    airport_path = os.path.join(base_path, DATA_DIR, airport)
+    if not os.path.exists(airport_path):
+        return []
+    years = []
+    files = os.listdir(airport_path)
+    for f in files:
+        if f.lower().endswith(".txt") and not f.startswith("."):
+            year_str = f.replace(".txt", "").replace(".TXT", "")
+            if year_str.isdigit():
+                years.append(int(year_str))
+    return sorted(years)
+
