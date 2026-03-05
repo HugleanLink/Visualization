@@ -5,6 +5,7 @@ from plot.temp import plot_temp
 from plot.dewpoint import plot_dew
 from plot.winddirection import plot_winddir
 from plot.windspeed import plot_windspeed
+import pandas as pd
 
 st.set_page_config(page_title="气象数据可视化平台", layout="wide")
 st.title("气象数据可视化")
@@ -105,4 +106,5 @@ if st.button("查询图像"):
                 )
         else:
             st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
+
 
