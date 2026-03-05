@@ -69,7 +69,7 @@ if st.button("查询图像"):
         if choice == "气温热图":
                 fig = plot_temp(df, airport, plot_title_suffix, show_annot=show_annot)
             elif choice == "露点热图":
-                fig = plot_dew(df, airport, plot_title_suffix, show_annot=show_annot)
+                fig = plot_dew(df2, airport, plot_title_suffix, show_annot=show_annot)
             elif choice == "风速热图":
                 fig = plot_windspeed(df, airport, plot_title_suffix, show_annot=show_annot)
             elif choice == "风向热图":
@@ -108,3 +108,4 @@ if st.button("查询图像"):
                 )
         else:
             st.warning("所选范围内没有找到有效数据，请检查文件是否存在")
+
