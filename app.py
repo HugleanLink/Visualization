@@ -95,6 +95,7 @@ if st.button("查询图像"):
                 fig = plot_windspeed(df, airport, plot_title_suffix)
                 
             if fig is not None:
+                st.caption(f"当前共基于{len(df)}条报文生成图表")
                 st.pyplot(fig)
                 buf = io.BytesIO()
                 fig.savefig(buf, format="png", dpi=300)
@@ -106,5 +107,6 @@ if st.button("查询图像"):
                 )
         else:
             st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
+
 
 
