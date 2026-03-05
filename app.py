@@ -106,33 +106,3 @@ if st.button("查询图像"):
         else:
             st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
 
-if st.button("查询图像"):
-    df = None
-    if choice == "气温热图":
-        df = load_metar(airport, start_year, end_year)
-        if df is not None: fig = plot_temp(df, airport, display_year_str)
-    elif choice == "露点热图":
-        df = load_dew(airport, start_year, end_year)
-        if df is not None: fig = plot_dew(df, airport, display_year_str)
-    elif choice == "风向热图":
-        df = load_wind(airport, start_year, end_year)
-        if df is not None: fig = plot_winddir(df, airport, display_year_str)
-    elif choice == "风速热图":
-        df = load_wind(airport, start_year, end_year)
-        if df is not None: fig = plot_windspeed(df, airport, display_year_str)
-    
-    if df is not None:
-        st.pyplot(fig)
-        buf = io.BytesIO()
-        fig.savefig(buf, format="png", dpi=300)
-        st.download_button(
-            label="下载PNG",
-            data=buf.getvalue(),
-            file_name=f"{airport}_{display_year_str}_{choice}.png",
-            mime="image/png"
-        )
-    else:
-        st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
-
-
-
