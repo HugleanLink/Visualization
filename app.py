@@ -55,6 +55,57 @@ else:
     st.stop()
 
 
+timezone_choice = st.radio(
+    "选择时间显示标准", 
+    ["UTC+0 (国际标准时间)", "UTC+8 (北京时间)"], 
+    horizontal=True
+)
+if st.button("查询图像"):
+    with st.spinner('正在处理数据并生成图像，请稍候...'):
+        df = None
+        fig = None
+        if choice == "气温热图":
+            df = load_metar(airport, start_year, end_year)
+        elif choice == "露点热图":
+            df = load_dew(airport, start_year, end_year)
+        elif choice == "风向热图":
+            df = load_wind(airport, start_year, end_year)
+        elif choice == "风速热图":
+            df = load_wind(airport, start_year, end_year)
+        elif choice == "风玫瑰":
+            st.warning("风玫瑰模块尚未完成")
+            st.stop()
+            
+        if df is not None:
+            if timezone_choice == "UTC+8 (北京时间)":
+                df["Time"] = df["Time"] + pd.Timedelta(hours=8)
+                df["month"] = df["Time"].dt.month
+                df["hour"] = df["Time"].dt.hour
+                plot_title_suffix = f"{display_year_str} (UTC+8)"
+            else:
+                plot_title_suffix = f"{display_year_str} (UTC)"
+            if choice == "气温热图":
+                fig = plot_temp(df, airport, plot_title_suffix)
+            elif choice == "露点热图":
+                fig = plot_dew(df, airport, plot_title_suffix)
+            elif choice == "风向热图":
+                fig = plot_winddir(df, airport, plot_title_suffix)
+            elif choice == "风速热图":
+                fig = plot_windspeed(df, airport, plot_title_suffix)
+                
+            if fig is not None:
+                st.pyplot(fig)
+                buf = io.BytesIO()
+                fig.savefig(buf, format="png", dpi=300)
+                st.download_button(
+                    label="下载PNG",
+                    data=buf.getvalue(),
+                    file_name=f"{airport}_{display_year_str}_{timezone_choice[:5]}_{choice}.png",
+                    mime="image/png"
+                )
+        else:
+            st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
+
 if st.button("查询图像"):
     df = None
     if choice == "气温热图":
@@ -82,5 +133,6 @@ if st.button("查询图像"):
         )
     else:
         st.warning("所选范围内没有找到有效数据，请检查文件是否存在。")
+
 
 
