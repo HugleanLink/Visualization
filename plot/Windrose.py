@@ -40,11 +40,12 @@ def plot_windrose(df, airport, year):
     sample_count = len(temp_df)
     plt.text(
         0.5, -0.1, 
-        f"sample size:{sample_count}",
+        f"sample size:{sample_count}windspeed and winddirectioon data sets",
         ha='center', va='center', 
         transform=ax.transAxes, 
         fontsize=12
     )
     plt.tight_layout()
     return fig
+
 
