@@ -6,6 +6,7 @@ from plot.temp import plot_temp
 from plot.dewpoint import plot_dew
 from plot.winddirection import plot_winddir
 from plot.windspeed import plot_windspeed
+from plot.windrose import plot_windrose
 
 st.set_page_config(page_title="气象数据可视化平台", layout="wide")
 st.title("气象数据可视化")
@@ -52,8 +53,7 @@ if st.button("生成图像"):
         elif choice in ["风速热图", "风向热图"]:
             df = load_wind(airport, start_year, end_year)
         elif choice == "风玫瑰":
-            st.warning("风玫瑰尚未完成")
-            st.stop()
+            df = load_wind(airport, start_year, end_year)
 
 
         if df is not None:
@@ -74,6 +74,8 @@ if st.button("生成图像"):
                 fig = plot_winddir(df, airport, plot_title_suffix, show_annot=show_annot)
             elif choice == "风速热图":
                 fig = plot_windspeed(df, airport, plot_title_suffix, show_annot=show_annot)
+            elif choice == "风玫瑰":
+                fig = plot_windrose(df, airport, plot_title_suffix)
             
 
             if fig is not None:
@@ -89,3 +91,4 @@ if st.button("生成图像"):
                 )
         else:
             st.warning("所选范围内无有效数据")
+
