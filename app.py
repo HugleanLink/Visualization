@@ -37,12 +37,12 @@ else:
     st.error("未找到数据文件")
     st.stop()
 
-timezone_choice = st.radio("选择时间显示标准", ["UTC+0 (国际标准时间)", "UTC+8 (北京时间)"], horizontal=True)
+timezone_choice = st.radio("选择时间显示标准", ["国际标准时间UTC+0", "北京时间UTC+8"], horizontal=True)
 show_annot = st.checkbox("在热图中显示具体数值", value=False)
 
 
-if st.button("查询图像"):
-    with st.spinner('正在处理数据并生成图像...'):
+if st.button("生成图像"):
+    with st.spinner('正在处理数据'):
         df = None
         fig = None
         if choice == "气温热图":
@@ -52,12 +52,12 @@ if st.button("查询图像"):
         elif choice in ["风速热图", "风向热图"]:
             df = load_wind(airport, start_year, end_year)
         elif choice == "风玫瑰":
-            st.warning("风玫瑰模块尚未完成")
+            st.warning("风玫瑰尚未完成")
             st.stop()
 
 
         if df is not None:
-            if timezone_choice == "UTC+8 (北京时间)":
+            if timezone_choice == "北京时间UTC+8":
                 df["Time"] = pd.to_datetime(df["Time"]) + pd.Timedelta(hours=8)
                 df["month"] = df["Time"].dt.month
                 df["hour"] = df["Time"].dt.hour
@@ -79,9 +79,8 @@ if st.button("查询图像"):
             if fig is not None:
                 st.caption(f"当前共基于{len(df)}条报文生成图表")
                 st.pyplot(fig)
-                
                 buf = io.BytesIO()
-                fig.savefig(buf, format="png", dpi=300)
+                fig.savefig(buf, format="png", dpi=1280)
                 st.download_button(
                     label="下载PNG图像",
                     data=buf.getvalue(),
@@ -89,4 +88,4 @@ if st.button("查询图像"):
                     mime="image/png"
                 )
         else:
-            st.warning("所选范围内没有找到有效数据，请检查数据文件")
+            st.warning("所选范围内无有效数据")
