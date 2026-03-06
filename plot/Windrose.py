@@ -31,7 +31,7 @@ def plot_windrose(df, airport, year):
     ax.set_yticks(ticks)  
     ax.set_yticklabels([str(t) + '%' for t in ticks])
     ax.legend(
-        title='风速 (m/s)',
+        title='windspeed(m/s)',
         loc='center left',
         bbox_to_anchor=(1.05, 0.5),
         frameon=True
@@ -40,10 +40,11 @@ def plot_windrose(df, airport, year):
     sample_count = len(temp_df)
     plt.text(
         0.5, -0.1, 
-        f"样本量: {sample_count} 组",
+        f"sample size:{sample_count}",
         ha='center', va='center', 
         transform=ax.transAxes, 
         fontsize=12
     )
     plt.tight_layout()
     return fig
+
